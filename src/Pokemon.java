@@ -1,11 +1,10 @@
-package pokemon;
 
 import java.util.ArrayList;
 
 public abstract class Pokemon {
 
 	// Atributos
-	
+
 	protected int id;
 	protected String nombre;
 	protected int nivel;
@@ -13,45 +12,33 @@ public abstract class Pokemon {
 	protected int vidaActual;
 	protected String tipo;
 	protected ArrayList<Ataque> ataques;
-	
 
-	// Métodos 
-	
-	Pokemon(){
+	// CONSTRUCTOR
+	Pokemon() {
 		ataques = new ArrayList<Ataque>();
 	}
-	
-	public abstract boolean subirNivel();
-	
+
 	public boolean subirNivel(int aumentoVida) {
-		if(this.nivel >= 100) {
+		if (this.nivel >= 100) {
 			return false;
 		}
-		
 		this.nivel++;
-		if(this.nivel % 10 == 0) {
-			this.ataques.add(FactoriaAtaques.getAtaque(this.tipo));
+		if (this.nivel % 10 == 0) {
+			this.ataques.add(FactoriaAtaques.getAtaque(this.tipo,this.nivel));
 		}
-		
 		this.vidaMaxima += aumentoVida;
 		this.vidaActual = this.vidaMaxima;
-		
-		
-		
 		return true;
-		
-	}
-	
-	public boolean estaVivo() {
-		if(this.vidaActual>0) {
-			return true;
-		}
-		
-		
-		return false;
-		
 	}
 
+	public boolean estaVivo() {
+		if (this.vidaActual > 0) {
+			return true;
+		}
+		return false;
+	}
+
+	// GETTERS / SETTERS
 	public int getId() {
 		return id;
 	}
@@ -107,9 +94,5 @@ public abstract class Pokemon {
 	public void setAtaques(ArrayList<Ataque> ataques) {
 		this.ataques = ataques;
 	}
-	
-	
-	
-	
-	
+
 }
