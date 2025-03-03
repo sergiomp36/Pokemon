@@ -1,3 +1,5 @@
+package package1;
+
 import java.util.Scanner;
 
 public class Main {
@@ -19,8 +21,9 @@ public class Main {
 				System.out.println("Opción no válida, vuelve a intentarlo");
 				break;
 			}
-		} while (opcion != 2);
 
+		} while (opcion != 2);
+		
 	}
 	
 	private static void mostrarMenu() {
@@ -28,4 +31,5 @@ public class Main {
 		System.out.println("(2) Salir");
 		System.out.println("Elige una opción: ");
 	}
+
 }

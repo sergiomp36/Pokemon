@@ -1,7 +1,9 @@
+package package1;
 
 import java.util.ArrayList;
 
-public abstract class Pokemon {
+public class Pokemon {
+
 
 	// Atributos
 
@@ -13,11 +15,11 @@ public abstract class Pokemon {
 	protected String tipo;
 	protected ArrayList<Ataque> ataques;
 
-	// CONSTRUCTOR
-	Pokemon() {
-		ataques = new ArrayList<Ataque>();
+	// CONSTRUCTORES
+	public Pokemon(){
+		
 	}
-
+	
 	public boolean subirNivel(int aumentoVida) {
 		if (this.nivel >= 100) {
 			return false;
@@ -27,10 +29,14 @@ public abstract class Pokemon {
 			this.ataques.add(FactoriaAtaques.getAtaque(this.tipo,this.nivel));
 		}
 		this.vidaMaxima += aumentoVida;
-		this.vidaActual = this.vidaMaxima;
+		this.vidaActual = this.vidaActual+aumentoVida;
 		return true;
 	}
 
+	public void aniadirAtaqueInicial() {
+		this.ataques.add(FactoriaAtaques.getAtaqueInicial(this.tipo));
+	}
+	
 	public boolean estaVivo() {
 		if (this.vidaActual > 0) {
 			return true;
@@ -94,5 +100,11 @@ public abstract class Pokemon {
 	public void setAtaques(ArrayList<Ataque> ataques) {
 		this.ataques = ataques;
 	}
+
+	public boolean subirNivel() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 
 }

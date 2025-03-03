@@ -1,5 +1,4 @@
-
-import java.util.Random;
+package package1;
 
 public class FactoriaAtaques {
 
@@ -93,19 +92,34 @@ public class FactoriaAtaques {
 		}
 	}
 	
-	public static void getAtaque(String tipo, int nivel) {
+	public static Ataque getAtaque(String tipo, int nivel) {
 		switch (tipo) {
 		case "Planta":
-			getAtaquePlanta(nivel/10);
-			break;
+			return getAtaquePlanta(nivel/10);
+		
 		case "Fuego":
-			getAtaqueFuego(nivel/10);
-			break;
+			return getAtaqueFuego(nivel/10);
+
 		case "Agua":
-			getAtaqueAgua(nivel/10);
-			break;
+			return getAtaqueAgua(nivel/10);
+
 		}
-
-
+		return null;
 	}
+	
+	public static Ataque getAtaqueInicial(String tipo) {
+		switch (tipo) {
+		case "Planta":
+			return getAtaquePlanta(0);
+		
+		case "Fuego":
+			return getAtaqueFuego(0);
+
+		case "Agua":
+			return getAtaqueAgua(0);
+
+		}
+		return null;
+	}
+
 }

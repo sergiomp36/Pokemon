@@ -1,12 +1,18 @@
+package package1;
+
+import java.util.Random;
+import java.util.Scanner;
 
 public class Partida {
+
 
 	Random r = new Random();
 	Scanner input = new Scanner(System.in);
 	
 	private Pokemon pokemonJugador = new Pokemon();
 	private Pokemon pokemonMaquina = new Pokemon();
-	private Pokemon[] pokemonOpciones = new Pokemon[3];
+	private Pokemon[] pokemonOpcionesJugador = new Pokemon[3];
+	private Pokemon[] pokemonOpcionesMaquina = new Pokemon[3];
 	
 	
 	//CONSTUCTOR
@@ -28,38 +34,52 @@ public class Partida {
 
 
 	private void inicializarOpciones() {
-		pokemonOpciones[0] = new Bulbasur(1,"Bulbasur",1,800);
-		pokemonOpciones[1] = new Charmander(1,"Charmander",1,600);
-		pokemonOpciones[2] = new Squirtle(1,"Squirtle",1,500);
+		pokemonOpcionesJugador[0] = new Charmander();
+		pokemonOpcionesJugador[1] = new Squirtle();
+		pokemonOpcionesJugador[2] = new Bulbasur();
+		
+		pokemonOpcionesMaquina[0] = new Charmander();
+		pokemonOpcionesMaquina[1] = new Squirtle();
+		pokemonOpcionesMaquina[2] = new Bulbasur();
 	}
 
 	private Pokemon escogerPokemonMaquina(){
-		pokemonMaquina = pokemonOpciones[r.nextInt(3)];
+		do {
+		pokemonMaquina = pokemonOpcionesMaquina[r.nextInt(3)];
+		}while(pokemonMaquina.equals(pokemonJugador));
 		return pokemonMaquina;
 	}
 
 	private Pokemon escogerPokemonJugador(){
 		int opcion;
-		System.out.print("Escoge un pokemon: ");
-		for (int i = 0; i < pokemonOpciones.length; i++) {
-			System.out.println("("+i + ") " + pokemonOpciones[i].getNombre());
+		System.out.print("Escoge un pokemon: \n");
+		for (int i = 0; i < pokemonOpcionesJugador.length; i++) {
+			System.out.println("("+i + ") " + pokemonOpcionesJugador[i].getNombre());
 		}
 		opcion = input.nextInt();
 		while (opcion < 0 || opcion > 2) {
 			System.out.print("Opción no válida, vuelve a intentarlo: ");
 			opcion = input.nextInt();
 		}
-		pokemonJugador = pokemonOpciones[opcion];
+		pokemonJugador = pokemonOpcionesJugador[opcion];
+		
 		return pokemonJugador;
 	}
 
 	private void combate(){
-		while(pokemonJugador.estaVivo() && pokemonMaquina.estaVivo()){
+		int ronda = 1;
+		do{
+			imprimirValores();
 			turnoJugador();
 			if(pokemonMaquina.estaVivo()){
 				turnoMaquina();
 			}
-		}
+			for(int i =0;i< ronda*2;i++) {
+	        	pokemonJugador.subirNivel();
+	        	pokemonMaquina.subirNivel();
+	        }
+		}while(pokemonJugador.estaVivo() && pokemonMaquina.estaVivo());
+		
 		if(pokemonJugador.estaVivo()){
 			System.out.println("Has ganado");
 		}else{
@@ -71,24 +91,24 @@ public class Partida {
 		Ataque ataque = escogerAtaqueJugador();
 		System.out.println("Has usado " + ataque.getNombre());
 		ataque.aplicarAtaque(pokemonMaquina);
-		pokemonJugador.subirNivel();
+		
 	}
 
 	private void turnoMaquina(){
 		Ataque ataque = escogerAtaqueMaquina();
 		System.out.println("La máquina ha usado " + ataque.getNombre());
 		ataque.aplicarAtaque(pokemonJugador);
-		pokemonMaquina.subirNivel();
+		
 	}
 
 	private Ataque escogerAtaqueJugador(){
 		int opcion;
 		System.out.print("Escoge un ataque: ");
 		for (int i = 0; i < pokemonJugador.ataques.size(); i++) {
-			System.out.println("("+i + ") " + pokemonJugador.ataques.get(i).getNombre());
+			System.out.println("("+i + ") " + pokemonJugador.ataques.get(i).getNombre()+" ("+pokemonJugador.ataques.get(i).getDanio()+")");
 		}
 		opcion = input.nextInt();
-		while (opcion < 0 || opcion > pokemonJugador.ataques.size()) {
+		while (opcion < 0 || opcion >= pokemonJugador.ataques.size()) {
 			System.out.print("Opción no válida, vuelve a intentarlo: ");
 			opcion = input.nextInt();
 		}
@@ -99,5 +119,9 @@ public class Partida {
 		return pokemonMaquina.ataques.get(r.nextInt(pokemonMaquina.ataques.size()));
 	}
 
+	private void imprimirValores() {
+		System.out.println("Jugador, "+pokemonJugador.getNombre()+" tiene "+pokemonJugador.getVidaActual()+" de vida y es de nivel "+pokemonJugador.getNivel());
+		System.out.println("La máquina ("+pokemonMaquina.getNombre()+") tiene "+pokemonMaquina.getVidaActual()+" de vida y es de nivel "+pokemonMaquina.getNivel());
+	}
 
 }
